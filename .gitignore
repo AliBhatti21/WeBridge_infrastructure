@@ -1,0 +1,6 @@
+webridge_venv/
+__pycache__/
+*.pyc
+*.pt
+*.pth
+.env
