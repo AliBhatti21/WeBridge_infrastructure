@@ -1,4 +1,4 @@
-# WeBridge — Bridge Infrastructure Inspection ML Pipeline
+# WeBridge Infrastructure Project
 
 Deep learning pipeline for automated bridge inspection image classification, developed for **Sarix Srl**. The system classifies structural defect severity from inspection imagery and flags non-conforming images, using ensembles of deep learning models trained on an HPC cluster.
 
