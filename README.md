@@ -1,9 +1,6 @@
 # WeBridge — Bridge Infrastructure Inspection ML Pipeline
 
-Machine learning pipeline for automated bridge inspection image classification, developed for **Sarix Srl**. The system classifies structural defect severity from inspection imagery and flags non-conforming (invalid/irrelevant) images, using ensembles of deep learning models trained on an HPC cluster.
-
-git push --set-upstream origin code_ali
-**Confidentiality note:** This repository contains client work performed for Sarix Srl. Do not make this repository public or share access outside the project team without explicit confirmation from Sarix.
+Deep learning pipeline for automated bridge inspection image classification, developed for **Sarix Srl**. The system classifies structural defect severity from inspection imagery and flags non-conforming images, using ensembles of deep learning models trained on an HPC cluster.
 
 ---
 
@@ -17,8 +14,6 @@ The pipeline addresses two related tasks on bridge inspection imagery:
    - **High** (1.0)
 2. **Non-Conformity (NC) Detection** — a binary classifier that flags non-conforming images (e.g., irrelevant, low quality, or invalid captures), applied specifically to images classified as High severity.
 
-Both models are trained and served as part of a broader multi-task learning (MTL) effort on bridge inspection data, building on an earlier ResNet50-based MTL architecture with combined NC / R / K2 prediction heads.
-
 ---
 
 ## Model Architecture
@@ -26,7 +21,7 @@ Both models are trained and served as part of a broader multi-task learning (MTL
 ### K2 Severity Classifier
 - **Backbone(s):** EfficientNetV2-S and EfficientNet-B0, combined in an ensemble
 - **Training data:** ~12,000 labeled inspection images
-- **Ensemble strategy:** 4-network ensemble with seed offsets (`K2_4net_ensemble.py`)
+- **Ensemble strategy:** 4-network ensemble with seed offsets 
 - **Threshold optimization:** balanced ordinal penalty matrix used to tune decision thresholds across the Low/Medium/High severity boundaries
 
 ### Non-Conformity (NC) Classifier
@@ -35,7 +30,7 @@ Both models are trained and served as part of a broader multi-task learning (MTL
 - **Scope:** applied only to images predicted as High severity by the K2 classifier
 
 ### Self-Supervised Pretraining
-- **Method:** SimCLR
+- **Method:** SimCLR (Simple Contrastive Learning Representations)
 - **Data:** ~44,000 unlabeled inspection images
 - Used to initialize backbone weights prior to supervised fine-tuning
 
@@ -49,7 +44,6 @@ Both models are trained and served as part of a broader multi-task learning (MTL
 
 ```
 webridge-inspection/
-├── data/                      # (gitignored) training/validation image sets
 ├── checkpoints/                # (gitignored) model weights
 ├── src/
 │   ├── training/
@@ -69,8 +63,6 @@ webridge-inspection/
 └── README.md
 ```
 
-*(Adjust the tree above to match your actual folder layout before committing.)*
-
 ---
 
 ## Training Infrastructure
@@ -78,7 +70,6 @@ webridge-inspection/
 - **Cluster:** HPC cluster via SLURM
 - **GPU:** NVIDIA H200
 - **Environment:** `WeBridge_venv` (Python virtual environment)
-- **User:** `hbhatti`
 
 ### Running a training job
 ```bash
@@ -125,7 +116,7 @@ pip install -r requirements.txt
 
 ## Known Issues / In Progress
 
-- DivideMix full training disabled due to class imbalance collapse; currently warmup-only
+
 - Threshold optimization matrix is tuned for the current label distribution — revisit if class balance shifts
 - AWS migration in progress: moving training to **SageMaker Training Jobs** (parallel GPU training of the 4 ensemble models) and inference to a **Lambda + API Gateway** CPU-based architecture
 
@@ -134,9 +125,8 @@ pip install -r requirements.txt
 ## Team / Contacts
 
 - **Project lead:** Ali
-- **Client:** Sarix Srl
+- **Company:** Sarix Srl
 
-*(Add teammate names/roles and contact info as appropriate.)*
 
 ---
 
